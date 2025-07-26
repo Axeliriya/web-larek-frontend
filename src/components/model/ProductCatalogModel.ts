@@ -16,6 +16,7 @@ export class ProductCatalogModel implements ICardsData {
 
 	set cards(products: ICard[]) {
 		this._products = products;
+		this.events.emit('initialData:loaded');
 	}
 
 	getCard(cardId: string): ICard | null {

@@ -237,13 +237,11 @@ export interface ICardsData {
   - `api: AppApi`: Клиент API.
   - `events: IEvents`: Брокер событий.
   - `setOrderField(field: keyof Omit<IOrder, 'items' | 'total'>, value: string)`: Устанавливает значение поля заказа.
-  - `setItems(items: string[])`: Устанавливает ID товаров.
-  - `setTotal(total: number)`: Устанавливает сумму.
   - `validateOrder()`: Проверяет поля оплаты и адреса.
   - `validateContacts()`: Проверяет email и телефон.
-  - `submitOrder()`: Отправляет заказ на сервер.
+  - `submitOrder(items: string[], total: number)`: Отправляет заказ на сервер.
   - `clear()`: Сбрасывает данные заказа.
-  - `getOrder()`: Возвращает данные заказа.
+  - `getOrder(items: string[], total: number)`: Возвращает данные заказа.
 - Отправляет события `order:valid`, `contacts:valid`, `order:success`, `order:error` для управления формами.
 
 ### Слой представления
@@ -287,7 +285,6 @@ export interface ICardsData {
   - `_description`: Описание.
   - `_button`: Кнопка "В корзину"/"Убрать".
   - `_inBasket`: Флаг нахождения в корзине.
-  - `getData()`: Возвращает данные карточки.
   - `set id(value: string)`: Устанавливает ID.
   - `set inBasket(value: boolean)`: Меняет текст кнопки.
   - `set price(price: number)`: Скрывает кнопку для "бесценных" товаров.
@@ -318,7 +315,6 @@ export interface ICardsData {
   - `paymentCard`, `paymentCash`: Кнопки выбора оплаты.
   - `set address(value: string)`: Устанавливает адрес.
   - `set payment(value: 'card' | 'cash')`: Выбирает способ оплаты.
-  - `set errors(value: string)`: Показывает ошибки.
 - Генерирует события `order:payment`, `order:address`, `order:submit`.
 
 #### Класс `ContactForm`
@@ -326,7 +322,6 @@ export interface ICardsData {
 - Управляет формой ввода email и телефона.
   - `phoneInput`, `emailInput`: Поля ввода.
   - `set phone(value: string)`, `set email(value: string)`: Устанавливают значения.
-  - `set errors(value: string)`: Показывает ошибки.
 - Генерирует события `contacts:email`, `contacts:phone`, `contacts:submit`.
 
 #### Класс `SuccessView`

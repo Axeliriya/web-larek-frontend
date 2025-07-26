@@ -35,8 +35,4 @@ export class ContactForm extends Form<IOrderForm> {
 	set email(value: string) {
 		this.emailInput.value = value;
 	}
-
-	set errors(value: string) {
-		this.setText(this._errors, value);
-	}
 }

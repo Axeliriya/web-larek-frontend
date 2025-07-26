@@ -55,7 +55,7 @@ export class CardView extends Component<ICard> {
 		}
 	}
 
-	set price(price: number) {
+	set price(price: number | null) {
 		if (this._price) {
 			this.setText(
 				this._price,

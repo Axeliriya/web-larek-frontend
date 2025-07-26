@@ -45,8 +45,4 @@ export class OrderForm extends Form<IOrderForm> {
 		this.paymentCard.classList.toggle('button_alt-active', value === 'card');
 		this.paymentCash.classList.toggle('button_alt-active', value === 'cash');
 	}
-
-	set errors(value: string) {
-		this.setText(this._errors, value);
-	}
 }

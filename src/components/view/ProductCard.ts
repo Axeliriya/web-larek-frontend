@@ -22,24 +22,10 @@ export class ProductCard extends CardView {
 			this._button.addEventListener('click', (evt) => {
 				evt.stopPropagation();
 				this.events.emit(this._inBasket ? 'card:remove' : 'basket:add', {
-					id: this._cardId,
+					id: this.id,
 				});
 			});
 		}
-	}
-
-	getData(): ICard {
-		return {
-			id: this._cardId,
-			title: this.title,
-			category: this.category,
-			price: this._price.textContent?.includes('Бесценно')
-				? null
-				: Number(this._price.textContent?.replace(' синапсов', '') || '0'),
-			image: this._image?.src || '',
-			description: this._description?.textContent || '',
-			inBasket: this._inBasket,
-		};
 	}
 
 	set id(value: string) {

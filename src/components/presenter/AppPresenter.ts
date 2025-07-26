@@ -54,7 +54,6 @@ export class AppPresenter {
 				this.events,
 				this.productCatalog.cards
 			);
-			this.events.emit('initialData:loaded');
 		} catch (error) {
 			const errorMessage = (error as Error).message || 'Неизвестная ошибка';
 			this.modal.open(
@@ -72,7 +71,7 @@ export class AppPresenter {
 		this.page.gallery = cardsArray.length
 			? cardsArray
 			: [createElement('div', { textContent: 'Товары не найдены' })];
-		this.page.counter = this.basketModel.items.length;
+		this.page.counter = this.basketModel?.items.length ?? 0;
 	}
 
 	private setupEventListeners(): void {
@@ -119,9 +118,12 @@ export class AppPresenter {
 
 		this.events.on('order:open', () => {
 			this.orderModel.clear();
-			this.orderModel.setItems(this.basketModel.itemIds);
-			this.orderModel.setTotal(this.basketModel.total);
-			const order = this.orderModel.getOrder();
+
+			const order = this.orderModel.getOrder(
+				this.basketModel.itemIds,
+				this.basketModel.total
+			);
+
 			this.orderModel.validateOrder();
 			this.modal.open(
 				this.orderForm.render({
@@ -156,7 +158,10 @@ export class AppPresenter {
 		});
 
 		this.events.on('order:submit', () => {
-			const order = this.orderModel.getOrder();
+			const order = this.orderModel.getOrder(
+				this.basketModel.itemIds,
+				this.basketModel.total
+			);
 			this.orderModel.validateContacts();
 			this.modal.open(
 				this.contactForm.render({
@@ -201,7 +206,10 @@ export class AppPresenter {
 		);
 
 		this.events.on('contacts:submit', () => {
-			this.orderModel.submitOrder();
+			this.orderModel.submitOrder(
+				this.basketModel.itemIds,
+				this.basketModel.total
+			);
 		});
 
 		this.events.on('order:success', (data: { total: number }) => {

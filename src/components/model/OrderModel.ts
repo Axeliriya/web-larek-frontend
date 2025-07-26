@@ -2,14 +2,14 @@ import { IOrder, IApiError, FormErrors } from '../../types';
 import { IEvents } from '../base/events';
 import { AppApi } from '../base/AppApi';
 
+type PartialOrder = Omit<IOrder, 'items' | 'total'>;
+
 export class OrderModel {
-	private order: IOrder = {
+	private order: PartialOrder = {
 		payment: 'card',
 		address: '',
 		email: '',
 		phone: '',
-		items: [],
-		total: 0,
 	};
 
 	private errors: FormErrors = {};
@@ -33,14 +33,6 @@ export class OrderModel {
 		}
 	}
 
-	setItems(items: string[]): void {
-		this.order.items = items;
-	}
-
-	setTotal(total: number): void {
-		this.order.total = total;
-	}
-
 	validateOrder(): void {
 		const errors: FormErrors = {};
 		if (!this.order.payment) errors.payment = 'Выберите способ оплаты';
@@ -59,9 +51,9 @@ export class OrderModel {
 		this.events.emit('contacts:valid', { isValid, errors });
 	}
 
-	async submitOrder(): Promise<void> {
+	async submitOrder(items: string[], total: number): Promise<void> {
 		try {
-			const response = await this.api.orderCards(this.order);
+			const response = await this.api.orderCards(this.getOrder(items, total));
 			this.events.emit('order:success', { total: response.total });
 			this.clear();
 		} catch (error) {
@@ -76,15 +68,18 @@ export class OrderModel {
 			address: '',
 			email: '',
 			phone: '',
-			items: [],
-			total: 0,
 		};
 		this.errors = {};
+
 		this.events.emit('order:valid', { isValid: false, errors: {} });
 		this.events.emit('contacts:valid', { isValid: false, errors: {} });
 	}
 
-	getOrder(): IOrder {
-		return this.order;
+	getOrder(items: string[], total: number): IOrder {
+		return {
+			...this.order,
+			items,
+			total,
+		};
 	}
 }
