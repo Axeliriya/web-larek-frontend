@@ -1,5 +1,5 @@
 import { Form } from './FormView';
-import { IOrderForm, FormErrors } from '../../types';
+import { IOrderForm } from '../../types';
 import { IEvents } from '../base/events';
 import { ensureElement } from '../../utils/utils';
 
